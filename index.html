@@ -33,35 +33,93 @@
                             </ul>
                         </li>
                     </ul>
-                    <form class="d-flex" id="cart-form" action="index.html" method="GET">
-                        <button class="btn btn-outline-dark" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart-count">0</span>
+                    <div class="d-flex align-items-center ms-lg-4">
+                        <span class="me-2">Total Order:</span>
+                        <span class="badge bg-dark text-white" id="cart-count">0</span>
+                        <button class="btn btn-sm btn-outline-dark ms-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#orderListCanvas" aria-controls="orderListCanvas">
+                            <i class="bi bi-list"></i> Pesanan
                         </button>
-                    </form>
+                    </div>
                     <!-- Notifikasi pesanan -->
                     <div id="order-notif" class="alert alert-success position-fixed top-0 end-0 m-3 d-none" role="alert" style="z-index:1050;">
                         Pesanan telah diterima!
                     </div>
+                    <!-- Offcanvas Order List -->
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="orderListCanvas" aria-labelledby="orderListCanvasLabel">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="orderListCanvasLabel">Daftar Pesanan</h5>
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <ul class="list-group mb-3" id="order-list"></ul>
+                            <div class="fw-bold">Total: <span id="order-total">Rp. 0</span></div>
+                        </div>
+                    </div>
                     <script>
-                    let cartCount = 0;
+                    // Mendapatkan pesanan dari localStorage
+                    function getOrders() {
+                        return JSON.parse(localStorage.getItem('orders') || '[]');
+                    }
+                    // Menyimpan pesanan ke localStorage
+                    function setOrders(orders) {
+                        localStorage.setItem('orders', JSON.stringify(orders));
+                    }
+                    // Render daftar pesanan di offcanvas
+                    function renderOrderList() {
+                        const orders = getOrders();
+                        const orderList = document.getElementById('order-list');
+                        const orderTotal = document.getElementById('order-total');
+                        orderList.innerHTML = '';
+                        let total = 0;
+                        orders.forEach(order => {
+                            const li = document.createElement('li');
+                            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                            li.textContent = `${order.name} x${order.qty}`;
+                            const price = order.price * order.qty;
+                            total += price;
+                            const span = document.createElement('span');
+                            span.textContent = 'Rp. ' + price.toLocaleString();
+                            li.appendChild(span);
+                            orderList.appendChild(li);
+                        });
+                        orderTotal.textContent = 'Rp. ' + total.toLocaleString();
+                        document.getElementById('cart-count').textContent = orders.reduce((sum, o) => sum + o.qty, 0);
+                    }
+                    // Notifikasi
                     function showOrderNotif() {
                         const notif = document.getElementById('order-notif');
                         notif.classList.remove('d-none');
                         setTimeout(() => notif.classList.add('d-none'), 2000);
                     }
-                    document.querySelectorAll('.order-btn').forEach(function(btn) {
-                        btn.addEventListener('click', function(e) {
-                            e.preventDefault();
-                            cartCount++;
-                            document.getElementById('cart-count').textContent = cartCount;
-                            showOrderNotif();
+                    // Inisialisasi tombol order
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Data produk
+                        const products = [
+                            { name: 'BOLU GULUNG', price: 35000 },
+                            { name: 'NASI BAKAR AYAM', price: 25000 },
+                            { name: 'SOP UBI', price: 15000 }
+                        ];
+                        document.querySelectorAll('.order-btn').forEach(function(btn, idx) {
+                            btn.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                let orders = getOrders();
+                                const prod = products[idx];
+                                const found = orders.find(o => o.name === prod.name);
+                                if (found) {
+                                    found.qty += 1;
+                                } else {
+                                    orders.push({ name: prod.name, price: prod.price, qty: 1 });
+                                }
+                                setOrders(orders);
+                                renderOrderList();
+                                showOrderNotif();
+                            });
                         });
+                        renderOrderList();
                     });
-                    document.getElementById('cart-form').addEventListener('submit', function(e) {
-                        // Kirim jumlah cart ke cart.html via query string
-                        this.action = 'index.html?count=' + cartCount;
+                    // Render ulang saat offcanvas dibuka
+                    document.addEventListener('shown.bs.offcanvas', function(e) {
+                        if (e.target.id === 'orderListCanvas') renderOrderList();
                     });
                     </script>
                 </div>
@@ -263,7 +321,7 @@
                                     e.preventDefault();
                                     orderCount++;
                                     orderCountBadge.textContent = orderCount;
-                                    orderCountBadge.classList.remove('d-none');
+                                    orderCountBadge.classList.remove('d-none'); 
                                 });
                             });
                             </script>
