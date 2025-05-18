@@ -120,20 +120,23 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center">
-                                    <a class="btn btn-outline-dark mt-auto order-btn" href="#">ORDER</a>
+                                <div class="text-center position-relative">
+                                    <a class="btn btn-outline-dark mt-auto order-btn position-relative" href="#">
+                                        ORDER
+                                        <span class="badge bg-dark text-white ms-2 order-count d-none" style="position: absolute; top: 50%; transform: translateY(-50%); right: -40px;">0</span>
+                                    </a>
                                 </div>
                             </div>
                             <script>
                             document.addEventListener('DOMContentLoaded', function() {
-                                let cartCount = 0;
-                                const cartBadge = document.querySelector('.btn.btn-outline-dark .badge');
-                                document.querySelectorAll('.order-btn').forEach(function(btn) {
-                                    btn.addEventListener('click', function(e) {
-                                        e.preventDefault();
-                                        cartCount++;
-                                        cartBadge.textContent = cartCount;
-                                    });
+                                const orderBtn = document.querySelector('.order-btn');
+                                const orderCountBadge = orderBtn.querySelector('.order-count');
+                                let orderCount = 0;
+                                orderBtn.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    orderCount++;
+                                    orderCountBadge.textContent = orderCount;
+                                    orderCountBadge.classList.remove('d-none');
                                 });
                             });
                             </script>
@@ -181,20 +184,23 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center">
-                                    <a class="btn btn-outline-dark mt-auto order-btn" href="#">ORDER</a>
+                                <div class="text-center position-relative">
+                                    <a class="btn btn-outline-dark mt-auto order-btn position-relative" href="#">
+                                        ORDER
+                                        <span class="badge bg-dark text-white ms-2 order-count d-none" style="position: absolute; top: 50%; transform: translateY(-50%); right: -40px;">0</span>
+                                    </a>
                                 </div>
                             </div>
                             <script>
                             document.addEventListener('DOMContentLoaded', function() {
-                                let cartCount = 0;
-                                const cartBadge = document.querySelector('.btn.btn-outline-dark .badge');
-                                document.querySelectorAll('.order-btn').forEach(function(btn) {
-                                    btn.addEventListener('click', function(e) {
-                                        e.preventDefault();
-                                        cartCount++;
-                                        cartBadge.textContent = cartCount;
-                                    });
+                                const orderBtn = document.querySelectorAll('.order-btn')[1];
+                                const orderCountBadge = orderBtn.querySelector('.order-count');
+                                let orderCount = 0;
+                                orderBtn.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    orderCount++;
+                                    orderCountBadge.textContent = orderCount;
+                                    orderCountBadge.classList.remove('d-none');
                                 });
                             });
                             </script>
@@ -241,20 +247,23 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center">
-                                    <a class="btn btn-outline-dark mt-auto order-btn" href="#">ORDER</a>
+                                <div class="text-center position-relative">
+                                    <a class="btn btn-outline-dark mt-auto order-btn position-relative" href="#">
+                                        ORDER
+                                        <span class="badge bg-dark text-white ms-2 order-count d-none" style="position: absolute; top: 50%; transform: translateY(-50%); right: -40px;">0</span>
+                                    </a>
                                 </div>
                             </div>
                             <script>
                             document.addEventListener('DOMContentLoaded', function() {
-                                let cartCount = 0;
-                                const cartBadge = document.querySelector('.btn.btn-outline-dark .badge');
-                                document.querySelectorAll('.order-btn').forEach(function(btn) {
-                                    btn.addEventListener('click', function(e) {
-                                        e.preventDefault();
-                                        cartCount++;
-                                        cartBadge.textContent = cartCount;
-                                    });
+                                const orderBtn = document.querySelectorAll('.order-btn')[2];
+                                const orderCountBadge = orderBtn.querySelector('.order-count');
+                                let orderCount = 0;
+                                orderBtn.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    orderCount++;
+                                    orderCountBadge.textContent = orderCount;
+                                    orderCountBadge.classList.remove('d-none');
                                 });
                             });
                             </script>
